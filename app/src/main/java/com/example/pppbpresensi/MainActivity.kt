@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import com.example.pppbpresensi.databinding.ActivityMainBinding
-import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding:ActivityMainBinding
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         with(binding){
             // Ngatur konten izin_spinner
-
             val adapterIzin = ArrayAdapter<String>(this@MainActivity,
                 androidx.constraintlayout.widget.R.layout.support_simple_spinner_dropdown_item,
                 izinList)
@@ -55,29 +53,36 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-
-            timePickerPresensi.setOnTimeChangedListener { _, hour, minute ->
-                var selectedTime = "$hour : $minute"
-            }
-
-            datePickerPresensi.init(
-                datePickerPresensi.year,
-                datePickerPresensi.month,
-                datePickerPresensi.dayOfMonth
-            ){_, year, month, dayOfMonth ->
-                val selectedDate = "$dayOfMonth ${getMonthName(month)} $year"
-            }
-
             presensiButton.setOnClickListener {
-                val selectedTime = "${timePickerPresensi.hour} : ${timePickerPresensi.minute}"
-                val selectedDate = "${datePickerPresensi.dayOfMonth} ${getMonthName(datePickerPresensi.month)} ${datePickerPresensi.year}"
-                Toast.makeText(
-                    this@MainActivity,
-                    "Waktu yang dipilih: $selectedTime\nTanggal yang dipilih: $selectedDate",
-                    Toast.LENGTH_SHORT
-                ).show()
+                val itemSelected = izinSpinner.selectedItem.toString()
+                if (itemSelected == izinList[0]){
+                    val selectedTime = "${timePickerPresensi.hour} : ${timePickerPresensi.minute}"
+                    val selectedDate = "${datePickerPresensi.dayOfMonth} ${getMonthName(datePickerPresensi.month)} ${datePickerPresensi.year}"
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Presensi berhasil $selectedDate jam $selectedTime",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else{
+                    if (hidingEditText.text.toString() == ""){
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Keterangan tidak boleh kosong",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    else{
+                        val selectedTime = "${timePickerPresensi.hour} : ${timePickerPresensi.minute}"
+                        val selectedDate = "${datePickerPresensi.dayOfMonth} ${getMonthName(datePickerPresensi.month)} ${datePickerPresensi.year}"
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Presensi berhasil $selectedDate jam $selectedTime",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
-
         }
     }
 
